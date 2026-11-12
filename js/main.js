@@ -13,7 +13,7 @@ const questions = [
 
         answers: [
             "В дурке",
-            "WB",
+            "На аутсорсе",
             "На рынке",
             "Я безработный миллиардер"
         ],
@@ -75,7 +75,7 @@ const questions = [
     },
 
     {
-        question: "Создал сок, не понят,будто бы я в Восьмой миле...",
+        question: "Аутсорсинг бухгалтера — это ",
 
         media: {
             type: "gif",
@@ -83,10 +83,10 @@ const questions = [
         },
 
         answers: [
-            "ты пишешь комментарии, вот бы тебя убили",
-            "шо?",
-            "ага",
-            "Мне похуй на весь ваш рэп, если твой рэп ходит в Amiri"
+            "когда зарплату считаешь не ты, а человек, которому ты платишь, чтобы он посчитал, сколько ты ему должен",
+            "беда",
+            "шо",
+            "дайте денег и я буду чилить"
         ],
 
         correct: 1
@@ -129,6 +129,147 @@ const resultText = document.getElementById("resultText");
 const resultButton = document.getElementById("resultButton");
 const rizz = document.getElementById("rizz");
 
+
+
+// =================================
+// RIZZ ELEMENTS
+// =================================
+
+const rizzQuestion = document.getElementById("rizzQuestion");
+const rizzConfirm = document.getElementById("rizzConfirm");
+const rizzInvite = document.getElementById("rizzInvite");
+const rizzDecline = document.getElementById("rizzDecline");
+
+const rizzYes = document.getElementById("rizzYes");
+const rizzNo = document.getElementById("rizzNo");
+
+const rizzConfirmYes = document.getElementById("rizzConfirmYes");
+const rizzConfirmNo = document.getElementById("rizzConfirmNo");
+
+
+// =================================
+// RIZZ NAVIGATION
+// =================================
+
+function showRizzState(state) {
+
+    document.querySelectorAll(".rizz-state").forEach(item => {
+        item.classList.remove("is-active");
+    });
+
+    state.classList.add("is-active");
+}
+
+
+// FIRST QUESTION
+
+rizzYes.addEventListener("click", () => {
+    showRizzState(rizzInvite);
+});
+
+rizzNo.addEventListener("click", () => {
+    showRizzState(rizzConfirm);
+});
+
+
+// SECOND QUESTION
+
+rizzConfirmYes.addEventListener("click", () => {
+    showRizzState(rizzDecline);          // "Да" → отказ
+});
+
+rizzConfirmNo.addEventListener("click", () => {
+    showRizzState(rizzQuestion);         // "передумала" → возврат к первому вопросу
+});
+
+// =================================
+// RIZZ NO BUTTON — УБЕГАЕТ
+// =================================
+
+const rizzContent = document.querySelector(".rizz-content");
+const noBtn = document.getElementById("rizzNo");
+
+let noBtnWidth = 0;
+let noBtnHeight = 0;
+
+function getBounds() {
+    return rizzContent.getBoundingClientRect();
+}
+
+function moveAway(e) {
+    if (!rizzQuestion.classList.contains("is-active")) return;
+
+    const bounds = getBounds();
+    const btnRect = noBtn.getBoundingClientRect();
+
+    // Берём актуальный размер (уже уменьшенный)
+    noBtnWidth = btnRect.width;
+    noBtnHeight = btnRect.height;
+
+    const mouseX = e.clientX - bounds.left;
+    const mouseY = e.clientY - bounds.top;
+
+    const btnCenterX = btnRect.left - bounds.left + noBtnWidth / 2;
+    const btnCenterY = btnRect.top - bounds.top + noBtnHeight / 2;
+
+    const dx = mouseX - btnCenterX;
+    const dy = mouseY - btnCenterY;
+    const distance = Math.hypot(dx, dy);
+
+    if (distance < 130) {
+        const angle = Math.atan2(dy, dx);
+        const push = 90;
+
+        let newX = btnCenterX - Math.cos(angle) * push - noBtnWidth / 2;
+        let newY = btnCenterY - Math.sin(angle) * push - noBtnHeight / 2;
+
+        const maxX = bounds.width - noBtnWidth;
+        const maxY = bounds.height - noBtnHeight;
+
+        newX = Math.max(0, Math.min(newX, maxX));
+        newY = Math.max(0, Math.min(newY, maxY));
+
+        noBtn.style.position = "absolute";
+        noBtn.style.left = newX + "px";
+        noBtn.style.top = newY + "px";
+        noBtn.style.width = noBtnWidth + "px";
+        noBtn.style.margin = "0";
+        noBtn.style.flex = "none";
+    }
+}
+
+// Слушаем движение мыши по всему блоку
+rizzContent.addEventListener("mousemove", moveAway);
+
+// Звук при нажатии на любую кнопку .rizz-no-button
+document.querySelectorAll(".rizz-no-button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        papoiSound.currentTime = 0;
+        papoiSound.play();
+    });
+});
+
+// Когда возвращаемся на первый экран — сбрасываем позицию кнопки
+function resetNoButton() {
+    noBtn.style.position = "";
+    noBtn.style.left = "";
+    noBtn.style.top = "";
+    noBtn.style.width = "";
+    noBtn.style.margin = "";
+    noBtn.style.flex = "";
+    noBtnWidth = 0;
+    noBtnHeight = 0;
+}
+
+// Сбрасываем при показе первого вопроса
+const originalShowRizzState = showRizzState;
+showRizzState = function(state) {
+    originalShowRizzState(state);
+    if (state === rizzQuestion) {
+        resetNoButton();
+    }
+};
+
 // =================================
 // SOUNDS
 // =================================
@@ -139,6 +280,7 @@ const roundStartSound = new Audio("sounds/roundstart.mp3");
 roundStartSound.volume = 0.4;
 const rizzSound = new Audio("sounds/rizz.mp3");
 rizzSound.volume = 0.5;
+const papoiSound = new Audio("sounds/papoi.mp3");
 
 // =================================
 // STATE

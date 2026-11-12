@@ -34,15 +34,17 @@
             width: 100%;
             max-width: 620px;
         }
-        .test-card {
-            padding: 42px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.35);
-            overflow: hidden;
-        }
+.test-card {
+    position: relative;
+    padding: 42px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+      isolation: isolate;
+}
         /* =================================
            WELCOME
         ================================= */
@@ -344,9 +346,13 @@
 .rizz {
     display: none;
     min-height: 330px;
+    overflow: hidden;
 }
 
 .rizz-content {
+    position: relative;
+    overflow: hidden;
+
     min-height: 330px;
     display: flex;
     flex-direction: column;
@@ -359,6 +365,13 @@
     margin: 0 auto 30px;
     border-radius: 16px;
     overflow: hidden;
+    pointer-events: none;       /* блокирует клики и наведение */
+    user-select: none;          /* нельзя выделить */
+    -webkit-user-drag: none;    /* нельзя перетащить */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .rizz-media img {
@@ -366,6 +379,13 @@
     height: 100%;
     display: block;
     object-fit: cover;
+    pointer-events: none;       /* блокирует клики и наведение */
+    user-select: none;          /* нельзя выделить */
+    -webkit-user-drag: none;    /* нельзя перетащить */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .rizz-content h1 {
@@ -412,7 +432,90 @@
     transform: translateY(0);
 }
 
+/* =================================
+   RIZZ STATES
+================================= */
 
+.rizz-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.rizz-state.is-active {
+    display: flex;
+}
+
+/* =================================
+   RIZZ CHOICES
+================================= */
+
+.rizz-choices {
+    display: flex;
+    justify-content: center;
+    align-items: center;      /* на одном уровне по вертикали */
+    gap: 12px;
+    width: 100%;
+}
+
+.rizz-choice-button {
+    flex: 1;
+    padding: 17px 18px;
+
+    border: 1px solid var(--text);
+    border-radius: 13px;
+
+    font: inherit;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+}
+
+/* YES */
+
+#rizzYes,
+#rizzConfirmYes {
+    flex: 1;
+    padding: 17px 18px;
+    background: var(--text);
+    color: #111;
+    border: 1px solid var(--text);
+    border-radius: 13px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* NO */
+
+
+
+.rizz-no-button {
+    flex: 0 0 auto;           /* не растягивается */
+    width: auto;
+    min-width: 50px;          /* можно уменьшить ещё */
+    padding: 8px 12px;       /* меньше отступы */
+    font-size: 0.8em;        /* чуть меньше текст */
+    font-weight: 600;
+
+    background: #1e1e1e;
+    color: var(--text);
+    border: 1px solid var(--text);
+    border-radius: 13px;
+    cursor: pointer;
+
+    position: relative;
+    z-index: 10;
+    transition: left 0.18s ease, top 0.18s ease, transform 0.2s ease;
+}
+.rizz-no-button:hover {
+    transform: none; /* отключаем обычный hover, чтобы не мешал */
+}
 
 
 

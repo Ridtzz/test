@@ -88,36 +88,89 @@
 <!-- =================================
      RIZZ
 ================================= -->
+
 <section class="rizz" id="rizz">
 
     <div class="rizz-content">
 
-        <div class="rizz-media">
-            <img
-                src="images/rizz.gif"
-                alt=""
-            >
+        <!-- FIRST QUESTION -->
+        <div class="rizz-state is-active" id="rizzQuestion">
+
+            <div class="rizz-media">
+                <img src="images/rizz.gif" alt="">
+            </div>
+
+            <h1>Гоу вместе по кофе?</h1>
+
+            <div class="rizz-choices">
+                <button class="rizz-choice-button" id="rizzYes">
+                    Да
+                </button>
+
+                <button class="rizz-choice-button rizz-no-button" id="rizzNo">
+                    Нет
+                </button>
+            </div>
+
         </div>
 
-        <h1>
-            Гоу вместе по кофе?
-        </h1>
+        <!-- SECOND QUESTION -->
+        <div class="rizz-state" id="rizzConfirm">
 
-        <a
-            class="rizz-button"
-            href="https://t.me/twilast"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            <span>
-                Напиши свой ответ мне в тг
-            </span>
-<i class="fa-brands fa-telegram"></i>
-        </a>
+            <div class="rizz-media">
+                <img src="images/rizz2.webp" alt="">
+            </div>
+
+            <h1>Точно?</h1>
+
+            <div class="rizz-choices">
+                <button class="rizz-choice-button" id="rizzConfirmYes">
+                    Да
+                </button>
+
+                <button class="rizz-choice-button rizz-no-button" id="rizzConfirmNo">
+                    передумала
+                </button>
+            </div>
+
+        </div>
+
+        <!-- FINAL YES -->
+        <div class="rizz-state" id="rizzInvite">
+
+            <div class="rizz-media">
+                <img src="images/rizz1.gif" alt="">
+            </div>
+
+            <h1>Круто, гаааз</h1>
+
+            <a
+                class="rizz-button"
+                href="https://t.me/twilast"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <span>Жду ответ в тг</span>
+                <i class="fa-brands fa-telegram"></i>
+            </a>
+
+        </div>
+
+        <!-- FINAL NO -->
+        <div class="rizz-state" id="rizzDecline">
+
+            <div class="rizz-media">
+                <img src="images/rizz2.webp" alt="">
+            </div>
+
+            <h1>sorry</h1>
+
+        </div>
 
     </div>
 
 </section>
+
 
         </div>
     </main>
